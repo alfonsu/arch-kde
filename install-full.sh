@@ -609,6 +609,7 @@ cmd=(dialog --cancel-label "Back" --title "Headset via Bluez5/PulseAudio" --sepa
 options=(
 1 "Install Headset via Bluez5/PulseAudio" on
 2 "Enable Bluetooth Autoconnect" on
+3 "Enable Bluetooth Battery Level Reporting" on
         )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -621,6 +622,9 @@ yes | sudo pacman -S pulseaudio-alsa pulseaudio-bluetooth bluez-utils
 2)
 sudo pacman -S bluetooth-autoconnect --needed --noconfirm
 sudo systemctl enable bluetooth-autoconnect
+;;
+3)
+sudo sed -i 's/#Experimental = false/Experimental = true/g' /etc/bluetooth/main.conf
 ;;
 esac
 done
