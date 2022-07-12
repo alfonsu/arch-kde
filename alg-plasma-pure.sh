@@ -15,7 +15,7 @@ options=(
 5 "Change SigLevel to Never in alg-plasma-pure/pacman.conf" off
 6 "Change iso compression to zstd" on
 7 "Change compression to zstd in mkinitcpio" on
-8 "Remove [alg_repo] to alg-plasma-pure/airootfs/etc/pacman.conf" on
+8 "Remove [alg_repo] to alg-plasma-pure/airootfs/etc/pacman.conf" off
 9 "Add extra packages" on
 10 "Create ISO NOW" on
 )
