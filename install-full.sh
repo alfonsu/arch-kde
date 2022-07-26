@@ -261,7 +261,7 @@ sudo systemctl enable --now nohang-desktop.service
 29)
 sudo pacman -S zram-generator --needed --noconfirm
 sudo sh -c 'echo "[zram0]" >> /etc/systemd/zram-generator.conf'
-sudo sh -c 'echo "zram-size = ram" >> /etc/systemd/zram-generator.conf'
+sudo sh -c 'echo "zram-size = 16384" >> /etc/systemd/zram-generator.conf'
 ;;
 30)
 sudo pacman -S ananicy --needed --noconfirm
