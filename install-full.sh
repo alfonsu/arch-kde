@@ -670,19 +670,20 @@ cmd=(dialog --cancel-label "Back" --title "Gaming" --separate-output --checklist
 options=(
 1 "Install Wine" on
 2 "Install PlayOnLinux" off
-3 "Install Lutris" off
-4 "Configure Ulimit to use Esync in Wine" off
-5 "Install DXVK for Nvidia Latest Drivers" off
-6 "Install DXVK for AMD" off
-7 "Install DXVK for Intel" off
-8 "Install GameMode" off
-9 "Install MangoHud" off
-10 "Install GOverlay" off
-11 "Install Steam" off
-12 "Install ProtonUp-Qt" off
-13 "Install Libstrangle (Simple FPS Limiter)" off
-14 "Install NoiseTorch (Microphone Noise Cancelling)" off
-15 "Install Heroic Games Launcher (Epic Games Store)" off
+3 "Install Bottles" off
+4 "Install Lutris" off
+5 "Configure Ulimit to use Esync in Wine" off
+6 "Install DXVK for Nvidia Latest Drivers" off
+7 "Install DXVK for AMD" off
+8 "Install DXVK for Intel" off
+9 "Install GameMode" off
+10 "Install MangoHud" off
+11 "Install GOverlay" off
+12 "Install Steam" off
+13 "Install ProtonUp-Qt" off
+14 "Install Libstrangle (Simple FPS Limiter)" off
+15 "Install NoiseTorch (Microphone Noise Cancelling)" off
+16 "Install Heroic Games Launcher (Epic Games Store)" off
         )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -696,44 +697,47 @@ sudo pacman -S wine wine-gecko wine-mono winetricks wine-installer --needed --no
 sudo pacman -S playonlinux --needed --noconfirm
 ;;
 3)
-sudo pacman -S lutris --needed --noconfirm
+sudo pacman -S bottles --needed --noconfirm
 ;;
 4)
+sudo pacman -S lutris --needed --noconfirm
+;;
+5)
 sudo sh -c 'echo "DefaultLimitNOFILE=1048576" >> /etc/systemd/user.conf'
 sudo sh -c 'echo "DefaultLimitNOFILE=1048576" >> /etc/systemd/system.conf'
 sudo sh -c 'echo "* hard nofile 1048576" >> /etc/security/limits.conf'
 ;;
-5)
+6)
 sudo pacman -S lib32-nvidia-utils vulkan-icd-loader vulkan-tools --needed --noconfirm
 ;;
-6)
+7)
 sudo pacman -S vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader vulkan-tools --needed --noconfirm
 ;;
-7)
+8)
 sudo pacman -S vulkan-intel lib32-vulkan-intel vulkan-icd-loader vulkan-tools --needed --noconfirm
 ;;
-8)
+9)
 sudo pacman -S gamemode lib32-gamemode --needed --noconfirm
 ;;
-9)
+10)
 sudo pacman -S mangohud-git lib32-mangohud-git --needed --noconfirm
 ;;
-10)
+11)
 sudo pacman -S goverlay-git --needed --noconfirm
 ;;
-11)
+12)
 sudo pacman -S steam --needed --noconfirm
 ;;
-12)
+13)
 sudo pacman -S protonup-qt --needed --noconfirm
 ;;
-13)
+14)
 sudo pacman -S libstrangle-git --needed --noconfirm
 ;;
-14)
+15)
 sudo pacman -S noisetorch --needed --noconfirm
 ;;
-15)
+16)
 sudo pacman -S heroic-games-launcher-bin --needed --noconfirm
 ;;
 esac
@@ -836,6 +840,9 @@ cmd=(dialog --cancel-label "Back" --title "Fixes" --menu "Select options:" 40 70
 options=(
 1 "Sound-Fix (use if primary output channel is not correctly)"
 2 "USB-wakeup (use if usb wake up not working)"
+3 "Imwheel-Fix (use if imwheel cant startup)"
+4 "Enable Nvidia Overclock (nvidia-xconfig --cool-bits=12)"
+5 "Enable Nvidia DRM (needed for wayland support)"
         )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -871,6 +878,17 @@ sudo sh -c 'echo >> /etc/systemd/system/rc-local.service'
 sudo sh -c 'echo [Install] >> /etc/systemd/system/rc-local.service'
 sudo sh -c 'echo WantedBy=multi-user.target >> /etc/systemd/system/rc-local.service'
 sudo systemctl enable rc-local.service
+;;
+3)
+sudo sh -c 'echo "#!/bin/sh" >> /etc/profile.d/startup.sh'
+sudo sh -c 'echo "imwheel -b 45" >> /etc/profile.d/startup.sh'
+;;
+4)
+sudo nvidia-xconfig --cool-bits=12
+;;
+5)
+sudo sed -i 's/quiet/nvidia-drm.modeset=1 quiet/g' /etc/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 ;;
 esac
 done
