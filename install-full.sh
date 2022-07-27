@@ -622,6 +622,7 @@ yes | sudo pacman -S pulseaudio-alsa pulseaudio-bluetooth bluez-utils
 2)
 sudo pacman -S bluetooth-autoconnect --needed --noconfirm
 sudo systemctl enable bluetooth-autoconnect
+systemctl --user enable pulseaudio-bluetooth-autoconnect
 ;;
 3)
 sudo sed -i 's/#Experimental = false/Experimental = true/g' /etc/bluetooth/main.conf
